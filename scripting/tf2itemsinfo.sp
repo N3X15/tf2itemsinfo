@@ -1904,15 +1904,13 @@ public Native_ItemHolidayRestriction( Handle:hPlugin, nParams )
 {
 	new iItemDefID = GetNativeCell(1);
 	new TFHoliday:holiday = TFHoliday:GetNativeCell(2);
-	switch( holiday )
-	{
-		case TFHoliday_Birthday:
-			return ItemHasProp( iItemDefID, TF2II_PROP_BDAY_STRICT );
-		case TFHoliday_Halloween,TFHoliday_FullMoon,TFHoliday_HalloweenOrFullMoon:
-			return ItemHasProp( iItemDefID, TF2II_PROP_HOFM_STRICT );
-		case TFHoliday_Christmas:
-			return ItemHasProp( iItemDefID, TF2II_PROP_XMAS_STRICT );
-	}
+	if(holiday == TFHoliday_Birthday)
+		return ItemHasProp( iItemDefID, TF2II_PROP_BDAY_STRICT );
+	else if(holiday == TFHoliday_Halloween || holiday == TFHoliday_FullMoon || holiday == TFHoliday_HalloweenOrFullMoon)
+		return ItemHasProp( iItemDefID, TF2II_PROP_HOFM_STRICT );
+	else if(holiday == TFHoliday_Christmas)
+		return ItemHasProp( iItemDefID, TF2II_PROP_XMAS_STRICT );
+	
 	return false;
 }
 public Native_GetItemEquipRegions( Handle:hPlugin, nParams )
