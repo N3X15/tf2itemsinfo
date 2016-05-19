@@ -5,6 +5,9 @@ SOURCEMOD_DIR = os.environ.get('SOURCEMOD18',os.path.join('..','sourcemod','sour
 TF2ITEMS_DIR = os.environ.get('TF2ITEMS',os.path.join('..','sourcemod-tf2items'))
 PROJECT_DIR=os.path.abspath(os.getcwd())
 PLUGINS_DIR=os.path.join(PROJECT_DIR,'plugins')
+SPCOMP='spcomp.exe'
+if platform.platform() == 'Linux':
+	SPCOMP='spcomp'
 
 SPCOMP_FLAGS = [
 	'-v0', # No banner
@@ -12,9 +15,6 @@ SPCOMP_FLAGS = [
 	'-i='+os.path.join(PROJECT_DIR,'scripting','include'),
 ]
 def spcomp(filename):
-	SPCOMP='spcomp.exe'
-	if platform.platform() == 'Linux':
-		SPCOMP='spcomp'
 	
 	os_utils.ensureDirExists(PLUGINS_DIR,noisy=True)
 	basename, ext = os.path.splitext(os.path.basename(filename))
@@ -25,5 +25,6 @@ def spcomp(filename):
 
 log.info('SOURCEMOD18='+SOURCEMOD_DIR)	
 log.info('TF2ITEMS_DIR='+TF2ITEMS_DIR)	
+log.info('SPCOMP='+SPCOMP)	
 with os_utils.Chdir(os.path.join(PROJECT_DIR,'scripting')):
 	spcomp('tf2itemsinfo.sp')
