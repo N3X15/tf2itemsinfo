@@ -283,7 +283,7 @@ GetConVars()
 	bUseLogs = GetConVarBool( sm_tf2ii_logs );
 
 	nFix01State = GetConVarInt( sm_tf2ii_fix01 );
-	
+
 #if defined _updater_included
 	bAutoUpdate = GetConVarBool(sm_tf2ii_updater);
 	if( LibraryExists("updater") )
@@ -361,11 +361,11 @@ public Action:Command_FindItems( iClient, nArgs )
 	{
 		iItemDefID = -1;
 		hData = INVALID_HANDLE;
-		
+
 		hData = Handle:GetArrayCell( g_hItemData, iCell );
 		if( hData != INVALID_HANDLE )
 			iItemDefID = GetArrayCell( hData, _:ItemData_DefinitionID );
-		
+
 		if( 0 <= iItemDefID <= iHighestItemDefID && ItemData_GetString( iItemDefID, ItemData_Name, strBuffer, sizeof(strBuffer) ) && StrContains( strBuffer, strSearch, false ) > -1 )
 		{
 			PushArrayCell( hResults, iItemDefID );
@@ -383,19 +383,19 @@ public Action:Command_FindItems( iClient, nArgs )
 
 
 	new iResults = RoundFloat( float( GetArraySize( hResults ) ) / 2.0 );
-	
+
 	decl String:strMessage[250];
-	
+
 	Format( strMessage, sizeof(strMessage), "Found %d items (page:%d/%d):", iResults, ( iResults ? iPage : 0 ), RoundToCeil( float( iResults ) / float(SEARCH_ITEMSPERPAGE) ) );
 	ReplyToCommand( iClient, strMessage );
-	
-	
+
+
 	iPage--;
 	new iMin = iPage * SEARCH_ITEMSPERPAGE;
 	iMin = ( iMin < 0 ? 0 : iMin );
 	new iMax = iPage * SEARCH_ITEMSPERPAGE + SEARCH_ITEMSPERPAGE;
 	iMax = ( iMax >= iResults ? iResults : iMax );
-	
+
 	if( iResults )
 		for( new i = iMin; i < iMax; i++ )
 		{
@@ -456,11 +456,11 @@ public Action:Command_FindItemsByClass( iClient, nArgs )
 	{
 		iItemDefID = -1;
 		hData = INVALID_HANDLE;
-		
+
 		hData = Handle:GetArrayCell( g_hItemData, iCell );
 		if( hData != INVALID_HANDLE )
 			iItemDefID = GetArrayCell( hData, _:ItemData_DefinitionID );
-		
+
 		if( 0 <= iItemDefID <= iHighestItemDefID && ItemData_GetString( iItemDefID, ItemData_ClassName, strBuffer, sizeof(strBuffer) ) && StrContains( strBuffer, strSearch, false ) > -1 )
 		{
 			ItemData_GetString( iItemDefID, ItemData_Name, strBuffer, sizeof(strBuffer) );
@@ -479,13 +479,13 @@ public Action:Command_FindItemsByClass( iClient, nArgs )
 
 
 	new iResults = RoundFloat( float( GetArraySize( hResults ) ) / 2.0 );
-	
+
 	decl String:strMessage[250];
-	
+
 	Format( strMessage, sizeof(strMessage), "Found %d items (page:%d/%d):", iResults, ( iResults ? iPage : 0 ), RoundToCeil( float( iResults ) / float(SEARCH_ITEMSPERPAGE) ) );
 	ReplyToCommand( iClient, strMessage );
-	
-	
+
+
 	iPage--;
 	new iMin = iPage * SEARCH_ITEMSPERPAGE;
 	iMin = ( iMin < 0 ? 0 : iMin );
@@ -630,37 +630,37 @@ public Action:Command_PrintInfo( iClient, nArgs )
 			ReplyToCommand( iClient, strMessage );
 		}
 	}
-	
+
 	if( nArgs >= 2 )
 	{
 		GetCmdArg( 2, strBuffer, sizeof(strBuffer) );
 		if( StringToInt( strBuffer ) > 0 )
 		{
 			ReplyToCommand( iClient, "=================== EXTRA INFO ===================" );
-			
+
 			ItemData_GetString( iItemDefID, ItemData_MLName, strBuffer, sizeof(strBuffer) );
 			if( strlen( strBuffer ) )
 			{
 				Format( strMessage, sizeof(strMessage), "Item ML Name: %s", strBuffer );
 				ReplyToCommand( iClient, strMessage );
 			}
-			
+
 			ReplyToCommand( iClient, "Proper name: %s", ItemHasProp( iItemDefID, TF2II_PROP_PROPER_NAME ) ? "true" : "false" );
-			
+
 			ItemData_GetString( iItemDefID, ItemData_LogName, strBuffer, sizeof(strBuffer) );
 			if( strlen( strBuffer ) )
 			{
 				Format( strMessage, sizeof(strMessage), "Kill Log Name: %s", strBuffer );
 				ReplyToCommand( iClient, strMessage );
 			}
-			
+
 			ItemData_GetString( iItemDefID, ItemData_LogIcon, strBuffer, sizeof(strBuffer) );
 			if( strlen( strBuffer ) )
 			{
 				Format( strMessage, sizeof(strMessage), "Kill Log Icon: %s", strBuffer );
 				ReplyToCommand( iClient, strMessage );
 			}
-			
+
 			new Handle:hEquipRegions = Handle:ItemData_GetCell( iItemDefID, ItemData_EquipRegions );
 			if( hEquipRegions != INVALID_HANDLE )
 			{
@@ -672,77 +672,77 @@ public Action:Command_PrintInfo( iClient, nArgs )
 					ReplyToCommand( iClient, strMessage );
 				}
 			}
-			
+
 			new Handle:hKV = Handle:ItemData_GetCell( iItemDefID, ItemData_KeyValues );
 			if( hKV != INVALID_HANDLE )
 			{
 				if( KvJumpToKey( hKV, "model_player_per_class", false ) )
 				{
 					ReplyToCommand( iClient, "Models per class:" );
-					
+
 					KvGetString( hKV, "scout", strBuffer, sizeof(strBuffer) );
 					if( strlen(strBuffer) )
 					{
 						Format( strMessage, sizeof(strMessage), "- Scout: %s", strBuffer );
 						ReplyToCommand( iClient, strMessage );
 					}
-					
+
 					KvGetString( hKV, "soldier", strBuffer, sizeof(strBuffer) );
 					if( strlen(strBuffer) )
 					{
 						Format( strMessage, sizeof(strMessage), "- Soldier: %s", strBuffer );
 						ReplyToCommand( iClient, strMessage );
 					}
-					
+
 					KvGetString( hKV, "sniper", strBuffer, sizeof(strBuffer) );
 					if( strlen(strBuffer) )
 					{
 						Format( strMessage, sizeof(strMessage), "- Sniper: %s", strBuffer );
 						ReplyToCommand( iClient, strMessage );
 					}
-					
+
 					KvGetString( hKV, "demoman", strBuffer, sizeof(strBuffer) );
 					if( strlen(strBuffer) )
 					{
 						Format( strMessage, sizeof(strMessage), "- Demoman: %s", strBuffer );
 						ReplyToCommand( iClient, strMessage );
 					}
-					
+
 					KvGetString( hKV, "Medic", strBuffer, sizeof(strBuffer) );
 					if( strlen(strBuffer) )
 					{
 						Format( strMessage, sizeof(strMessage), "- Medic: %s", strBuffer );
 						ReplyToCommand( iClient, strMessage );
 					}
-					
+
 					KvGetString( hKV, "heavy", strBuffer, sizeof(strBuffer) );
 					if( strlen(strBuffer) )
 					{
 						Format( strMessage, sizeof(strMessage), "- Heavy: %s", strBuffer );
 						ReplyToCommand( iClient, strMessage );
 					}
-					
+
 					KvGetString( hKV, "pyro", strBuffer, sizeof(strBuffer) );
 					if( strlen(strBuffer) )
 					{
 						Format( strMessage, sizeof(strMessage), "- Pyro: %s", strBuffer );
 						ReplyToCommand( iClient, strMessage );
 					}
-					
+
 					KvGetString( hKV, "spy", strBuffer, sizeof(strBuffer) );
 					if( strlen(strBuffer) )
 					{
 						Format( strMessage, sizeof(strMessage), "- Spy: %s", strBuffer );
 						ReplyToCommand( iClient, strMessage );
 					}
-					
+
 					KvGetString( hKV, "engineer", strBuffer, sizeof(strBuffer) );
 					if( strlen(strBuffer) )
 					{
 						Format( strMessage, sizeof(strMessage), "- Engineer: %s", strBuffer );
 						ReplyToCommand( iClient, strMessage );
 					}
-					
+
 					KvGoBack( hKV );
 				}
 				else
@@ -751,11 +751,11 @@ public Action:Command_PrintInfo( iClient, nArgs )
 					Format( strMessage, sizeof(strMessage), "World model: %s", strBuffer );
 					ReplyToCommand( iClient, strMessage );
 				}
-				
+
 				KvGetString( hKV, "model_player", strBuffer, sizeof(strBuffer) );
 				Format( strMessage, sizeof(strMessage), "View model: %s", strBuffer );
 				ReplyToCommand( iClient, strMessage );
-				
+
 				new nStyles = 1;
 				if( KvJumpToKey( hKV, "visuals", false ) && KvJumpToKey( hKV, "styles", false ) && KvGotoFirstSubKey( hKV ) )
 				{
@@ -887,11 +887,11 @@ public Action:Command_FindAttributes( iClient, nArgs )
 	{
 		iAttribID = 0;
 		hData = INVALID_HANDLE;
-		
+
 		hData = Handle:GetArrayCell( g_hAttribData, iCell );
 		if( hData != INVALID_HANDLE )
 			iAttribID = GetArrayCell( hData, _:AttribData_Index );
-		
+
 		if( 0 < iAttribID <= iHighestAttribID )
 		{
 			AttribData_GetString( iAttribID, AttribData_Name, strAttribName[0], sizeof(strAttribName[]) );
@@ -912,13 +912,13 @@ public Action:Command_FindAttributes( iClient, nArgs )
 
 
 	new iResults = RoundFloat( float( GetArraySize( hResults ) ) / 2.0 );
-	
+
 	decl String:strMessage[250];
-	
+
 	Format( strMessage, sizeof(strMessage), "Found %d attributes (page:%d/%d):", iResults, ( iResults ? iPage : 0 ), RoundToCeil( float( iResults ) / float(SEARCH_ITEMSPERPAGE) ) );
 	ReplyToCommand( iClient, strMessage );
-	
-	
+
+
 	iPage--;
 	new iMin = iPage * SEARCH_ITEMSPERPAGE;
 	iMin = ( iMin < 0 ? 0 : iMin );
@@ -986,11 +986,11 @@ public Action:Command_FindAttributesByClass( iClient, nArgs )
 	{
 		iAttribID = 0;
 		hData = INVALID_HANDLE;
-		
+
 		hData = Handle:GetArrayCell( g_hAttribData, iCell );
 		if( hData != INVALID_HANDLE )
 			iAttribID = GetArrayCell( hData, _:AttribData_Index );
-		
+
 		if( 0 < iAttribID <= iHighestAttribID )
 		{
 			AttribData_GetString( iAttribID, AttribData_AttribClass, strAttribClass, sizeof(strAttribClass) );
@@ -1012,13 +1012,13 @@ public Action:Command_FindAttributesByClass( iClient, nArgs )
 
 
 	new iResults = RoundFloat( float( GetArraySize( hResults ) ) / 2.0 );
-	
+
 	decl String:strMessage[250];
-	
+
 	Format( strMessage, sizeof(strMessage), "Found %d attirubtes (page:%d/%d):", iResults, ( iResults ? iPage : 0 ), RoundToCeil( float( iResults ) / float(SEARCH_ITEMSPERPAGE) ) );
 	ReplyToCommand( iClient, strMessage );
-	
-	
+
+
 	iPage--;
 	new iMin = iPage * SEARCH_ITEMSPERPAGE;
 	iMin = ( iMin < 0 ? 0 : iMin );
@@ -1130,10 +1130,10 @@ PrecacheItemSchema()
 		else
 			Error( ERROR_BREAKP|ERROR_LOG, _, "Failed to parse file: %s", strFilePath );
 	KvRewind( hItemSchema );
-	
-	
+
+
 	// Parse 'items_game.txt' KeyValues
-	
+
 	if( KvJumpToKey( hItemSchema, "qualities", false ) )
 	{
 		new Handle:hQualities = CreateKeyValues( "qualities" );
@@ -1196,7 +1196,7 @@ PrecacheItemSchema()
 			do
 			{
 				hDataContainer = INVALID_HANDLE;
-				
+
 				iProperty = TF2II_PROP_INVALID;
 
 				KvGetSectionName( hAttributes, strBuffer, sizeof(strBuffer) );
@@ -1300,7 +1300,7 @@ PrecacheItemSchema()
 		do
 		{
 			bStringAttrib = false;
-			
+
 			bPrefab = false;
 			hDataContainer = INVALID_HANDLE;
 
@@ -1314,7 +1314,7 @@ PrecacheItemSchema()
 			iIndex = StringToInt( strBuffer );
 			if( iIndex < 0 )
 				continue;
-			
+
 			hDataContainer = ItemData_Create( iIndex );
 			if( hDataContainer == INVALID_HANDLE )
 			{
@@ -1358,7 +1358,7 @@ PrecacheItemSchema()
 			}
 			while( bPrefab );
 			nBranches = GetArraySize(hTree);
-			
+
 			if( hSubItems == INVALID_HANDLE )
 			{
 				hSubItems = CreateKeyValues( "items" );
@@ -1385,15 +1385,15 @@ PrecacheItemSchema()
 					KvRewind( hPrefabs );
 					KvJumpToKey( hPrefabs, strBuffer, false );
 				}
-				
+
 				KvGetString( ( bPrefab ? hPrefabs : hItems ), "item_name", strBuffer, sizeof(strBuffer), "" );
 				if( strlen( strBuffer ) )
 					ItemData_SetString( iIndex, ItemData_MLName, strBuffer );
-				
+
 				KvGetString( ( bPrefab ? hPrefabs : hItems ), "item_description", strBuffer, sizeof(strBuffer), "" );
 				if( strlen( strBuffer ) )
 					ItemData_SetString( iIndex, ItemData_MLDescription, strBuffer );
-				
+
 				KvGetString( ( bPrefab ? hPrefabs : hItems ), "item_type_name", strBuffer, sizeof(strBuffer), "" );
 				if( strlen( strBuffer ) )
 					ItemData_SetString( iIndex, ItemData_MLSlotName, strBuffer );
@@ -1574,11 +1574,11 @@ PrecacheItemSchema()
 					}
 					KvGoBack( bPrefab ? hPrefabs : hItems );
 				}
-				
+
 				if( nFix01State == 2 && bStringAttrib )
 					break;
 			}
-			
+
 			if( nFix01State == 2 && bStringAttrib )
 			{
 				ItemData_Destroy( iIndex );
@@ -1586,10 +1586,10 @@ PrecacheItemSchema()
 			}
 
 			ItemData_SetCell( iIndex, ItemData_Property, iProperty );
-			
+
 			if( iIndex > iHighestItemDefID )
 				iHighestItemDefID = iIndex;
-			
+
 			hDataContainer = INVALID_HANDLE;
 		}
 		while( KvGotoNextKey( hItems ) );
@@ -1677,11 +1677,11 @@ _:GetAttribIDByName( const String:strSearch[] )
 	{
 		iAttribID = -1;
 		hData = INVALID_HANDLE;
-		
+
 		hData = Handle:GetArrayCell( g_hAttribData, i );
 		if( hData != INVALID_HANDLE )
 			iAttribID = GetArrayCell( hData, _:AttribData_Index );
-		
+
 		if( 0 < iAttribID <= iHighestAttribID )
 		{
 			AttribData_GetString( iAttribID, AttribData_Name, strAttribName, sizeof(strAttribName) );
@@ -1713,16 +1713,16 @@ TF2ItemQuality:GetQualityByName( const String:strSearch[] )
 /* Native functions */
 //////////////////////
 
-public Native_IsItemSchemaPrecached( Handle:hPlugin, nParams )
+public int Native_IsItemSchemaPrecached( Handle:hPlugin, nParams )
 {
 	return g_hItemData != INVALID_HANDLE;
 }
 
-public Native_IsValidItemID( Handle:hPlugin, nParams )
+public int Native_IsValidItemID( Handle:hPlugin, nParams )
 {
 	return IsValidItemID( GetNativeCell(1) );
 }
-public Native_GetItemName( Handle:hPlugin, nParams )
+public int Native_GetItemName( Handle:hPlugin, nParams )
 {
 	new iBufferLength = GetNativeCell(3);
 	decl String:strBuffer[iBufferLength+1];
@@ -1730,7 +1730,7 @@ public Native_GetItemName( Handle:hPlugin, nParams )
 	SetNativeString( 2, strBuffer, iBufferLength );
 	return bResult;
 }
-public Native_GetItemClass( Handle:hPlugin, nParams )
+public int Native_GetItemClass( Handle:hPlugin, nParams )
 {
 	new iBufferLength = GetNativeCell(3);
 	decl String:strBuffer[iBufferLength+1];
@@ -1747,7 +1747,7 @@ public Native_GetItemClass( Handle:hPlugin, nParams )
 	SetNativeString( 2, strBuffer, iBufferLength );
 	return bResult;
 }
-public Native_GetItemSlot( Handle:hPlugin, nParams )
+public int Native_GetItemSlot( Handle:hPlugin, nParams )
 {
 	decl String:strSlot[TF2II_ITEMSLOT_LENGTH];
 	//decl String:strClass[TF2II_ITEMCLASS_LENGTH];
@@ -1759,7 +1759,7 @@ public Native_GetItemSlot( Handle:hPlugin, nParams )
 	}
 	return -1;
 }
-public Native_GetItemSlotName( Handle:hPlugin, nParams )
+public int Native_GetItemSlotName( Handle:hPlugin, nParams )
 {
 	new iBufferLength = GetNativeCell(3);
 	decl String:strBuffer[iBufferLength+1];
@@ -1767,7 +1767,7 @@ public Native_GetItemSlotName( Handle:hPlugin, nParams )
 	SetNativeString( 2, strBuffer, iBufferLength );
 	return bResult;
 }
-public Native_GetListedItemSlot( Handle:hPlugin, nParams )
+public int Native_GetListedItemSlot( Handle:hPlugin, nParams )
 {
 	decl String:strSlot[TF2II_ITEMSLOT_LENGTH];
 	if( ItemData_GetString( GetNativeCell(1), ItemData_ListedSlot, strSlot, sizeof(strSlot) ) )
@@ -1777,7 +1777,7 @@ public Native_GetListedItemSlot( Handle:hPlugin, nParams )
 	}
 	return -1;
 }
-public Native_GetListedItemSlotName( Handle:hPlugin, nParams )
+public int Native_GetListedItemSlotName( Handle:hPlugin, nParams )
 {
 	new iBufferLength = GetNativeCell(3);
 	decl String:strBuffer[iBufferLength+1];
@@ -1785,14 +1785,14 @@ public Native_GetListedItemSlotName( Handle:hPlugin, nParams )
 	SetNativeString( 2, strBuffer, iBufferLength );
 	return bResult;
 }
-public Native_GetItemQuality( Handle:hPlugin, nParams )
+public int Native_GetItemQuality( Handle:hPlugin, nParams )
 {
 	decl String:strQuality[TF2II_ITEMQUALITY_LENGTH];
 	if( ItemData_GetString( GetNativeCell(1), ItemData_Quality, strQuality, sizeof(strQuality) ) )
 		return _:GetQualityByName( strQuality );
 	return -1;
 }
-public Native_GetItemQualityName( Handle:hPlugin, nParams )
+public int Native_GetItemQualityName( Handle:hPlugin, nParams )
 {
 	new iBufferLength = GetNativeCell(3);
 	decl String:strBuffer[iBufferLength+1];
@@ -1800,7 +1800,7 @@ public Native_GetItemQualityName( Handle:hPlugin, nParams )
 	SetNativeString( 2, strBuffer, iBufferLength );
 	return bResult;
 }
-public Native_GetToolType( Handle:hPlugin, nParams )
+public int Native_GetToolType( Handle:hPlugin, nParams )
 {
 	new iBufferLength = GetNativeCell(3);
 	decl String:strBuffer[iBufferLength+1];
@@ -1808,7 +1808,7 @@ public Native_GetToolType( Handle:hPlugin, nParams )
 	SetNativeString( 2, strBuffer, iBufferLength );
 	return bResult;
 }
-public Native_IsItemUsedByClass( Handle:hPlugin, nParams )
+public int Native_IsItemUsedByClass( Handle:hPlugin, nParams )
 {
 	new iItemDefID = GetNativeCell(1);
 	if( !IsValidItemID(iItemDefID) )
@@ -1842,22 +1842,22 @@ public Native_IsItemUsedByClass( Handle:hPlugin, nParams )
 	}
 	return (ItemData_GetCell( iItemDefID, ItemData_UsedBy ) & iClass);
 }
-public Native_GetItemMinLevel( Handle:hPlugin, nParams )
+public int Native_GetItemMinLevel( Handle:hPlugin, nParams )
 {
 	return ItemData_GetCell( GetNativeCell(1), ItemData_MinLevel );
 }
-public Native_GetItemMaxLevel( Handle:hPlugin, nParams )
+public int Native_GetItemMaxLevel( Handle:hPlugin, nParams )
 {
 	return ItemData_GetCell( GetNativeCell(1), ItemData_MaxLevel );
 }
-public Native_GetNumAttributes( Handle:hPlugin, nParams )
+public int Native_GetNumAttributes( Handle:hPlugin, nParams )
 {
 	new Handle:hAttributes = Handle:ItemData_GetCell( GetNativeCell(1), ItemData_Attributes );
 	if( hAttributes == INVALID_HANDLE )
 		return 0;
 	return RoundToFloor( float( GetArraySize( hAttributes ) ) / 2.0 );
 }
-public Native_GetAttributeName( Handle:hPlugin, nParams )
+public int Native_GetAttributeName( Handle:hPlugin, nParams )
 {
 	new Handle:hAttributes = Handle:ItemData_GetCell( GetNativeCell(1), ItemData_Attributes );
 	if( hAttributes == INVALID_HANDLE )
@@ -1873,7 +1873,7 @@ public Native_GetAttributeName( Handle:hPlugin, nParams )
 	SetNativeString( 2, strAttributeName, iAttributeNameLength );
 	return bResult;
 }
-public Native_GetAttributeID( Handle:hPlugin, nParams )
+public int Native_GetAttributeID( Handle:hPlugin, nParams )
 {
 	new Handle:hAttributes = Handle:ItemData_GetCell( GetNativeCell(1), ItemData_Attributes );
 	if( hAttributes == INVALID_HANDLE )
@@ -1881,7 +1881,7 @@ public Native_GetAttributeID( Handle:hPlugin, nParams )
 	new a = GetNativeCell(2) * 2;
 	return ( a < GetArraySize(hAttributes) ? GetArrayCell( hAttributes, a ) : 0 );
 }
-public Native_GetAttributeValue( Handle:hPlugin, nParams )
+public int Native_GetAttributeValue( Handle:hPlugin, nParams )
 {
 	new Handle:hAttributes = Handle:ItemData_GetCell( GetNativeCell(1), ItemData_Attributes );
 	if( hAttributes == INVALID_HANDLE )
@@ -1889,7 +1889,7 @@ public Native_GetAttributeValue( Handle:hPlugin, nParams )
 	new a = GetNativeCell(2) * 2 + 1;
 	return ( a < GetArraySize(hAttributes) ? GetArrayCell( hAttributes, a ) : 0 );
 }
-public Native_GetItemAttributes( Handle:hPlugin, nParams )
+public int Native_GetItemAttributes( Handle:hPlugin, nParams )
 {
 	new Handle:hAttributes = Handle:ItemData_GetCell( GetNativeCell(1), ItemData_Attributes );
 	if( hAttributes == INVALID_HANDLE )
@@ -1900,7 +1900,7 @@ public Native_GetItemAttributes( Handle:hPlugin, nParams )
 	//new Handle:hOutput = CloneArray( hAttributes );
 	return _:hOutput;
 }
-public Native_ItemHolidayRestriction( Handle:hPlugin, nParams )
+public int Native_ItemHolidayRestriction( Handle:hPlugin, nParams )
 {
 	new iItemDefID = GetNativeCell(1);
 	new TFHoliday:holiday = TFHoliday:GetNativeCell(2);
@@ -1910,10 +1910,10 @@ public Native_ItemHolidayRestriction( Handle:hPlugin, nParams )
 		return ItemHasProp( iItemDefID, TF2II_PROP_HOFM_STRICT );
 	else if(holiday == TFHoliday_Christmas)
 		return ItemHasProp( iItemDefID, TF2II_PROP_XMAS_STRICT );
-	
+
 	return false;
 }
-public Native_GetItemEquipRegions( Handle:hPlugin, nParams )
+public int Native_GetItemEquipRegions( Handle:hPlugin, nParams )
 {
 	new Handle:hEquipRegions = Handle:ItemData_GetCell( GetNativeCell(1), ItemData_EquipRegions );
 	if( hEquipRegions == INVALID_HANDLE )
@@ -1923,12 +1923,12 @@ public Native_GetItemEquipRegions( Handle:hPlugin, nParams )
 	CloseHandle( hEquipRegions );
 	return _:hOutput;
 }
-public Native_ItemHasProperty( Handle:hPlugin, nParams )
+public int Native_ItemHasProperty( Handle:hPlugin, nParams )
 {
 	return ItemHasProp( GetNativeCell(1), GetNativeCell(2) );
 }
 
-public Native_GetItemKeyValues( Handle:hPlugin, nParams )
+public int Native_GetItemKeyValues( Handle:hPlugin, nParams )
 {
 	new Handle:hKeyValues = Handle:ItemData_GetCell( GetNativeCell(1), ItemData_KeyValues );
 	if( hKeyValues == INVALID_HANDLE )
@@ -1939,7 +1939,7 @@ public Native_GetItemKeyValues( Handle:hPlugin, nParams )
 	CloseHandle( hCopy );
 	return _:hOutput;
 }
-public Native_GetItemKey( Handle:hPlugin, nParams )
+public int Native_GetItemKey( Handle:hPlugin, nParams )
 {
 	new Handle:hKeyValues = Handle:ItemData_GetCell( GetNativeCell(1), ItemData_KeyValues );
 
@@ -1952,7 +1952,7 @@ public Native_GetItemKey( Handle:hPlugin, nParams )
 	KvRewind( hKeyValues );
 	return KvGetNum( hKeyValues, strKey, 0 );
 }
-public Native_GetItemKeyFloat( Handle:hPlugin, nParams )
+public int Native_GetItemKeyFloat( Handle:hPlugin, nParams )
 {
 	new Handle:hKeyValues = Handle:ItemData_GetCell( GetNativeCell(1), ItemData_KeyValues );
 
@@ -1965,7 +1965,7 @@ public Native_GetItemKeyFloat( Handle:hPlugin, nParams )
 	KvRewind( hKeyValues );
 	return _:KvGetFloat( hKeyValues, strKey, 0.0 );
 }
-public Native_GetItemKeyString( Handle:hPlugin, nParams )
+public int Native_GetItemKeyString( Handle:hPlugin, nParams )
 {
 	new Handle:hKeyValues = Handle:ItemData_GetCell( GetNativeCell(1), ItemData_KeyValues );
 
@@ -1983,11 +1983,11 @@ public Native_GetItemKeyString( Handle:hPlugin, nParams )
 	SetNativeString( 3, strBuffer, iBufferLength );
 }
 
-public Native_IsValidAttribID( Handle:hPlugin, nParams )
+public int Native_IsValidAttribID( Handle:hPlugin, nParams )
 {
 	return IsValidAttribID( GetNativeCell(1) );
 }
-public Native_GetAttribName( Handle:hPlugin, nParams )
+public int Native_GetAttribName( Handle:hPlugin, nParams )
 {
 	new iBufferLength = GetNativeCell(3);
 	decl String:strBuffer[iBufferLength+1];
@@ -1995,7 +1995,7 @@ public Native_GetAttribName( Handle:hPlugin, nParams )
 	SetNativeString( 2, strBuffer, iBufferLength );
 	return bResult;
 }
-public Native_GetAttribClass( Handle:hPlugin, nParams )
+public int Native_GetAttribClass( Handle:hPlugin, nParams )
 {
 	new iBufferLength = GetNativeCell(3);
 	decl String:strBuffer[iBufferLength+1];
@@ -2003,7 +2003,7 @@ public Native_GetAttribClass( Handle:hPlugin, nParams )
 	SetNativeString( 2, strBuffer, iBufferLength );
 	return bResult;
 }
-public Native_GetAttribDispName( Handle:hPlugin, nParams )
+public int Native_GetAttribDispName( Handle:hPlugin, nParams )
 {
 	new iBufferLength = GetNativeCell(3);
 	decl String:strBuffer[iBufferLength+1];
@@ -2011,15 +2011,15 @@ public Native_GetAttribDispName( Handle:hPlugin, nParams )
 	SetNativeString( 2, strBuffer, iBufferLength );
 	return bResult;
 }
-public Native_GetAttribMinValue( Handle:hPlugin, nParams )
+public int Native_GetAttribMinValue( Handle:hPlugin, nParams )
 {
 	return AttribData_GetCell( GetNativeCell(1), AttribData_MinValue );
 }
-public Native_GetAttribMaxValue( Handle:hPlugin, nParams )
+public int Native_GetAttribMaxValue( Handle:hPlugin, nParams )
 {
 	return AttribData_GetCell( GetNativeCell(1), AttribData_MaxValue );
 }
-public Native_GetAttribGroup( Handle:hPlugin, nParams )
+public int Native_GetAttribGroup( Handle:hPlugin, nParams )
 {
 	new iBufferLength = GetNativeCell(3);
 	decl String:strBuffer[iBufferLength+1];
@@ -2027,7 +2027,7 @@ public Native_GetAttribGroup( Handle:hPlugin, nParams )
 	SetNativeString( 2, strBuffer, iBufferLength );
 	return bResult;
 }
-public Native_GetAttribDescrString( Handle:hPlugin, nParams )
+public int Native_GetAttribDescrString( Handle:hPlugin, nParams )
 {
 	new iBufferLength = GetNativeCell(3);
 	decl String:strBuffer[iBufferLength+1];
@@ -2035,7 +2035,7 @@ public Native_GetAttribDescrString( Handle:hPlugin, nParams )
 	SetNativeString( 2, strBuffer, iBufferLength );
 	return bResult;
 }
-public Native_GetAttribDescrFormat( Handle:hPlugin, nParams )
+public int Native_GetAttribDescrFormat( Handle:hPlugin, nParams )
 {
 	new iBufferLength = GetNativeCell(3);
 	decl String:strBuffer[iBufferLength+1];
@@ -2043,11 +2043,11 @@ public Native_GetAttribDescrFormat( Handle:hPlugin, nParams )
 	SetNativeString( 2, strBuffer, iBufferLength );
 	return bResult;
 }
-public Native_HiddenAttrib( Handle:hPlugin, nParams )
+public int Native_HiddenAttrib( Handle:hPlugin, nParams )
 {
 	return AttribHasProp( GetNativeCell(1), TF2II_PROP_HIDDEN );
 }
-public Native_GetAttribEffectType( Handle:hPlugin, nParams )
+public int Native_GetAttribEffectType( Handle:hPlugin, nParams )
 {
 	new iAttribID = GetNativeCell(1);
 	if( AttribHasProp( iAttribID, TF2II_PROP_EFFECT_POSITIVE ) )
@@ -2056,16 +2056,16 @@ public Native_GetAttribEffectType( Handle:hPlugin, nParams )
 		return -1;
 	return 0;
 }
-public Native_AttribStoredAsInteger( Handle:hPlugin, nParams )
+public int Native_AttribStoredAsInteger( Handle:hPlugin, nParams )
 {
 	return AttribHasProp( GetNativeCell(1), TF2II_PROP_STORED_AS_INTEGER );
 }
-public Native_AttribHasProperty( Handle:hPlugin, nParams )
+public int Native_AttribHasProperty( Handle:hPlugin, nParams )
 {
 	return AttribHasProp( GetNativeCell(1), GetNativeCell(2) );
 }
 
-public Native_GetAttribKeyValues( Handle:hPlugin, nParams )
+public int Native_GetAttribKeyValues( Handle:hPlugin, nParams )
 {
 	new Handle:hKeyValues = Handle:AttribData_GetCell( GetNativeCell(1), AttribData_KeyValues );
 	if( hKeyValues == INVALID_HANDLE )
@@ -2076,7 +2076,7 @@ public Native_GetAttribKeyValues( Handle:hPlugin, nParams )
 	CloseHandle( hCopy );
 	return _:hOutput;
 }
-public Native_GetAttribKey( Handle:hPlugin, nParams )
+public int Native_GetAttribKey( Handle:hPlugin, nParams )
 {
 	new Handle:hKeyValues = Handle:AttribData_GetCell( GetNativeCell(1), AttribData_KeyValues );
 
@@ -2089,7 +2089,7 @@ public Native_GetAttribKey( Handle:hPlugin, nParams )
 	KvRewind( hKeyValues );
 	return KvGetNum( hKeyValues, strKey, 0 );
 }
-public Native_GetAttribKeyFloat( Handle:hPlugin, nParams )
+public int Native_GetAttribKeyFloat( Handle:hPlugin, nParams )
 {
 	new Handle:hKeyValues = Handle:AttribData_GetCell( GetNativeCell(1), AttribData_KeyValues );
 
@@ -2102,7 +2102,7 @@ public Native_GetAttribKeyFloat( Handle:hPlugin, nParams )
 	KvRewind( hKeyValues );
 	return _:KvGetFloat( hKeyValues, strKey, 0.0 );
 }
-public Native_GetAttribKeyString( Handle:hPlugin, nParams )
+public int Native_GetAttribKeyString( Handle:hPlugin, nParams )
 {
 	new Handle:hKeyValues = Handle:AttribData_GetCell( GetNativeCell(1), AttribData_KeyValues );
 
@@ -2120,7 +2120,7 @@ public Native_GetAttribKeyString( Handle:hPlugin, nParams )
 	SetNativeString( 3, strBuffer, iBufferLength );
 }
 
-public Native_IsConflictRegions( Handle:hPlugin, nParams )
+public int Native_IsConflictRegions( Handle:hPlugin, nParams )
 {
 	decl String:strERA[16], String:strERB[16];
 	GetNativeString( 1, strERA, sizeof(strERA) );
@@ -2159,13 +2159,13 @@ public Native_IsConflictRegions( Handle:hPlugin, nParams )
 
 	return false;
 }
-public Native_GetQualityByName( Handle:hPlugin, nParams )
+public int Native_GetQualityByName( Handle:hPlugin, nParams )
 {
 	decl String:strQualityName[TF2II_ITEMQUALITY_LENGTH];
 	GetNativeString( 1, strQualityName, TF2II_ITEMQUALITY_LENGTH-1 );
 	return _:GetQualityByName( strQualityName );
 }
-public Native_GetQualityName( Handle:hPlugin, nParams )
+public int Native_GetQualityName( Handle:hPlugin, nParams )
 {
 	new iQualityNum = GetNativeCell(1);
 	new _:iQualityNameLength = GetNativeCell(3);
@@ -2176,13 +2176,13 @@ public Native_GetQualityName( Handle:hPlugin, nParams )
 	SetNativeString( 2, strQualityName, iQualityNameLength );
 	return bResult;
 }
-public Native_GetAttributeIDByName( Handle:hPlugin, nParams )
+public int Native_GetAttributeIDByName( Handle:hPlugin, nParams )
 {
 	decl String:strAttribName[TF2II_ATTRIBNAME_LENGTH];
 	GetNativeString( 1, strAttribName, TF2II_ATTRIBNAME_LENGTH-1 );
 	return GetAttribIDByName( strAttribName );
 }
-public Native_GetAttributeNameByID( Handle:hPlugin, nParams )
+public int Native_GetAttributeNameByID( Handle:hPlugin, nParams )
 {
 	new iAttribID = GetNativeCell(1);
 	new _:iAttribNameLength = GetNativeCell(3);
@@ -2192,7 +2192,7 @@ public Native_GetAttributeNameByID( Handle:hPlugin, nParams )
 	return bResult;
 }
 
-public Native_FindItemsIDsByCond( Handle:hPlugin, nParams )
+public int Native_FindItemsIDsByCond( Handle:hPlugin, nParams )
 {
 	Error( ERROR_LOG|ERROR_NOPRINT, SP_ERROR_NATIVE, "Deprecated function. Use TF2II_FindItems instead." );
 
@@ -2236,11 +2236,11 @@ public Native_FindItemsIDsByCond( Handle:hPlugin, nParams )
 	{
 		iItemDefID = -1;
 		hData = INVALID_HANDLE;
-		
+
 		hData = Handle:GetArrayCell( g_hItemData, i );
 		if( hData != INVALID_HANDLE )
 			iItemDefID = GetArrayCell( hData, _:ItemData_DefinitionID );
-		
+
 		if( 0 <= iItemDefID <= iHighestItemDefID )
 		{
 			if( strlen(strSlot) > 0 && !( ItemData_GetString( iItemDefID, ItemData_Slot, strBuffer, sizeof(strBuffer) ) && strcmp( strSlot, strBuffer, false ) == 0 ) )
@@ -2267,16 +2267,16 @@ public Native_FindItemsIDsByCond( Handle:hPlugin, nParams )
 	CloseHandle( hResults );
 	return _:hReturn;
 }
-public Native_FindItems( Handle:hPlugin, nParams )
+public int Native_FindItems( Handle:hPlugin, nParams )
 {
 	new Handle:hResults = CreateArray();
-	
+
 	decl String:strClass[64], String:strSlot[64], String:strTool[64];
 	GetNativeString( 1, strClass, sizeof(strClass) );
 	GetNativeString( 2, strSlot, sizeof(strSlot) );
 	new iUsedByClass = GetNativeCell(3);
 	GetNativeString( 4, strTool, sizeof(strTool) );
-	
+
 	if( g_hItemData != INVALID_HANDLE )
 	{
 		decl String:strBuffer[128];
@@ -2285,24 +2285,24 @@ public Native_FindItems( Handle:hPlugin, nParams )
 		{
 			iItemDefID = -1;
 			hData = INVALID_HANDLE;
-			
+
 			hData = Handle:GetArrayCell( g_hItemData, iCell );
 			if( hData != INVALID_HANDLE )
 				iItemDefID = GetArrayCell( hData, _:ItemData_DefinitionID );
-			
+
 			if( !( 0 <= iItemDefID <= iHighestItemDefID ) )
 				continue;
-			
+
 			if( iUsedByClass > TF2II_CLASS_NONE && !( iUsedByClass & GetArrayCell( hData, _:ItemData_UsedBy ) ) )
 				continue;
-			
+
 			if( strlen( strClass ) )
 			{
 				GetArrayString( hData, _:ItemData_ClassName, strBuffer, sizeof(strBuffer) );
 				if( !strlen(strBuffer) || !StrEqual( strClass, strBuffer, false ) )
 					continue;
 			}
-			
+
 			if( strlen( strSlot ) )
 			{
 				GetArrayString( hData, _:ItemData_Slot, strBuffer, sizeof(strBuffer) );
@@ -2333,7 +2333,7 @@ public Native_FindItems( Handle:hPlugin, nParams )
 	CloseHandle( hResults );
 	return _:hReturn;
 }
-public Native_ListEffects( Handle:hPlugin, nParams )
+public int Native_ListEffects( Handle:hPlugin, nParams )
 {
 	new bool:bAllEffects = !!GetNativeCell(1);
 
@@ -2356,7 +2356,7 @@ public Native_ListEffects( Handle:hPlugin, nParams )
 	return _:hReturn;
 }
 
-public Native_DeprecatedFunction( Handle:hPlugin, nParams )
+public int Native_DeprecatedFunction( Handle:hPlugin, nParams )
 {
 	Error( ERROR_BREAKN|ERROR_LOG|ERROR_NOPRINT, SP_ERROR_ABORTED, "Deprecated function." );
 	return 0;
@@ -2790,7 +2790,7 @@ stock KvCopyDataToKv( Handle:hSource, Handle:hDest, bool:bIAmASubKey = false )
 			}
 		}
 		while( KvGotoNextKey( hSource, false ) );
-		
+
 		if( bIAmASubKey )
 			KvGoBack( hSource );
 	}
