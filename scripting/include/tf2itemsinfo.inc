@@ -806,7 +806,7 @@ stock bool:TF2II_ItemCanBeStrange( iItemDefinitionIndex )
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-public SharedPlugin:__pl_tf2itemsinfo = 
+public SharedPlugin:__pl_tf2itemsinfo =
 {
 	name = "tf2itemsinfo",
 	file = "tf2itemsinfo.smx",
@@ -823,7 +823,7 @@ public SharedPlugin:__pl_tf2itemsinfo =
 public __pl_tf2itemsinfo_SetNTVOptional()
 {
 	MarkNativeAsOptional("TF2II_IsItemSchemaPrecached");
-	
+
 	MarkNativeAsOptional("TF2II_IsValidItemID");
 	MarkNativeAsOptional("TF2II_GetItemClass");
 	MarkNativeAsOptional("TF2II_GetItemSlot");
@@ -845,7 +845,7 @@ public __pl_tf2itemsinfo_SetNTVOptional()
 	MarkNativeAsOptional("TF2II_GetItemEquipRegions");
 	MarkNativeAsOptional("TF2II_GetItemName");
 	MarkNativeAsOptional("TF2II_ItemHasProperty");
-	
+
 	MarkNativeAsOptional("TF2II_IsValidAttribID");
 	MarkNativeAsOptional("TF2II_GetAttribName");
 	MarkNativeAsOptional("TF2II_GetAttribClass");
@@ -859,7 +859,7 @@ public __pl_tf2itemsinfo_SetNTVOptional()
 	MarkNativeAsOptional("TF2II_GetAttribEffectType");
 	MarkNativeAsOptional("TF2II_AttribStoredAsInteger");
 	MarkNativeAsOptional("TF2II_AttribHasProperty");
-	
+
 	MarkNativeAsOptional("TF2II_GetItemKeyValues");
 	MarkNativeAsOptional("TF2II_GetItemKey");
 	MarkNativeAsOptional("TF2II_GetItemKeyFloat");
@@ -868,17 +868,17 @@ public __pl_tf2itemsinfo_SetNTVOptional()
 	MarkNativeAsOptional("TF2II_GetAttribKey");
 	MarkNativeAsOptional("TF2II_GetAttribKeyFloat");
 	MarkNativeAsOptional("TF2II_GetAttribKeyString");
-	
+
 	MarkNativeAsOptional("TF2II_IsConflictRegions");
 	MarkNativeAsOptional("TF2II_GetQualityByName");
 	MarkNativeAsOptional("TF2II_GetQualityName");
 	MarkNativeAsOptional("TF2II_GetAttributeIDByName");
 	MarkNativeAsOptional("TF2II_GetAttributeNameByID");
-	
+
 	MarkNativeAsOptional("TF2II_FindItems");
 	MarkNativeAsOptional("TF2II_ListAttachableEffects");
 	MarkNativeAsOptional("TF2II_ListEffects");
-	
+
 	// Obsolete/deprecated functions
 	MarkNativeAsOptional("TF2II_IsPromotionalItem");
 	MarkNativeAsOptional("TF2II_IsUpgradeableStockWeapon");
