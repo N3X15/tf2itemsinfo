@@ -11,7 +11,7 @@ if platform.system() == 'Linux':
 
 SPCOMP_FLAGS = [
 	'-v0', # No banner
-	'-i='+os.path.join(TF2ITEMS_DIR,'scripting','include'),
+	'-i='+os.path.join(TF2ITEMS_DIR,'pawn'), # tf2items rides the short bus in this list.
 	'-i='+os.path.join(PROJECT_DIR,'scripting','include'),
 ]
 def spcomp(filename):
