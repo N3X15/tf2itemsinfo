@@ -6,7 +6,7 @@ TF2ITEMS_DIR = os.environ.get('TF2ITEMS',os.path.join('..','sourcemod-tf2items')
 PROJECT_DIR=os.path.abspath(os.getcwd())
 PLUGINS_DIR=os.path.join(PROJECT_DIR,'plugins')
 SPCOMP='spcomp.exe'
-if platform.platform() == 'Linux':
+if platform.system() == 'Linux':
 	SPCOMP='spcomp'
 
 SPCOMP_FLAGS = [
